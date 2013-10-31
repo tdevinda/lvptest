@@ -1,15 +1,21 @@
 package lk.test;
 
-import com.lvp.ListViewPopulator;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+
+import com.lvp.ListViewPopulator;
 
 public class MainActivity extends Activity {
 
@@ -31,8 +37,50 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		ListView listView = (ListView) findViewById(R.id.listView_main_contacts);
 		
+		
+		DBModule dbm = new DBModule();	//to get a helper
+		
+		ListView listView = (ListView) findViewById(R.id.listView_main_contacts);
+		final ListViewPopulator populator = new ListViewPopulator(
+				getApplicationContext(), 
+				dbm.getHelper(getApplicationContext()),
+				DBModule.TABLENAME);
+		
+		populator.setListView(listView);
+		populator.setMapping(R.id.textView_entry_name, "name");
+		populator.setMapping(R.id.textView_entry_phone, "number");
+		populator.setListViewEntryLayoutID(R.layout.contact_entry);
+		//populator.populate("name=?", new String[]{"a"});
+		populator.populate();
+		
+		final EditText search = (EditText) findViewById(R.id.input_main_search);
+		search.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable e) {
+				if(e.toString().compareTo("") != 0) { 
+					populator.populate("name LIKE '%"+ e.toString() +"%'", null);
+				} else {
+					populator.populate();
+				}
+
+			}
+		});
+
 	}
 
 	@Override

@@ -8,13 +8,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    
+    <EditText 
+        android:id="@+id/input_main_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        />
     
     <ListView 
         android:id="@+id/listView_main_contacts"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        
+        android:layout_below="@+id/input_main_search"
         android:layout_alignBottom="@+id/space_1"
         />
     

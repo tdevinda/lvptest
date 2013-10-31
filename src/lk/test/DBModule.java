@@ -23,6 +23,12 @@ public class DBModule {
 		
 	}
 	
+	public SQLiteOpenHelper getHelper(Context context) {
+		DBHelper helper = new DBHelper(context);
+		
+		return helper;
+	}
+	
 	private class DBHelper extends SQLiteOpenHelper {
 
 		public DBHelper(Context context) {
